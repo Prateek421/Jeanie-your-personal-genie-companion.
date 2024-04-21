@@ -1,22 +1,22 @@
 import numpy as np
 import sounddevice as sd
 import librosa
-from preprocess_data import extract_features
+#from preprocess_data import extract_features
 from tensorflow.keras.models import Sequential, model_from_json
 import pickle
 
-with open('scaler2.pickle', 'rb') as f:
+with open('engine\\speechr\\scaler2.pickle', 'rb') as f:
     scaler2 = pickle.load(f)
     
-with open('encoder2.pickle', 'rb') as f:
+with open('engine\\speechr\\encoder2.pickle', 'rb') as f:
     encoder2 = pickle.load(f)
 
-json_file = open('voice_recog_model.json', 'r')
+json_file = open('engine\\speechr\\voice_recog_model.json', 'r')
 loaded_model_json = json_file.read()
 json_file.close()
 loaded_model = model_from_json(loaded_model_json)
 
-loaded_model.load_weights("voice_recog_model.h5")
+loaded_model.load_weights("engine\\speechr\\voice_recog_model.h5")
 print("Loaded model from disk")
 
 emotions1={1:'Neutral', 2:'Calm', 3:'Happy', 4:'Sad', 5:'Angry', 6:'Fear', 7:'Disgust',8:'Surprise'}
@@ -59,14 +59,13 @@ def predict_emotion(audio_data, sr):
     return y_pred[0][0]
 
 # Main function to capture live audio, preprocess, and predict emotion
-def main():
-    while True:
+def start():
+   # while True:
         # Capture live audio
-        audio_data, sr = capture_audio()
+    audio_data, sr = capture_audio()
         # Predict emotion
-        emotion_label = predict_emotion(audio_data, sr)
-        print("Predicted Emotion:", emotion_label)
+    emotion_label = predict_emotion(audio_data, sr)
+    print("Predicted Emotion:", emotion_label)
 
-# Call the main function to start capturing live audio and predicting emotion
-if __name__ == "__main__":
-    main()
+'''if __name__ == "__main__":
+    main()'''
